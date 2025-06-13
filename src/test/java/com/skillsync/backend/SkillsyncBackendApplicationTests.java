@@ -2,11 +2,12 @@ package com.skillsync.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import com.skillsync.backend.config.TestSecurityConfig;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.security.test.context.support.WithMockUser;
 
 @SpringBootTest
-@Import(TestSecurityConfig.class)
+@ActiveProfiles("test")
+@WithMockUser
 class SkillsyncBackendApplicationTests {
 
 	@Test
