@@ -1,6 +1,6 @@
 package com.skillsync.backend.model;
 
 public enum Role {
-    ADMIN,
-    USER
+    FREELANCER,
+    CLIENT
 }

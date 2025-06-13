@@ -29,7 +29,7 @@ public class DataInitializer {
                 admin.setUsername("admin");
                 admin.setEmail("admin@skillsync.com");
                 admin.setPassword(encoder.encode("admin"));
-                admin.setRole(Role.ADMIN);
+                admin.setRole(Role.CLIENT);
                 
                 userRepository.save(admin);
             }
