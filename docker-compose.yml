@@ -6,10 +6,10 @@ services:
     restart: always
     container_name: skillsync-db
     environment:
-      MYSQL_DATABASE: skillsync_db
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_USER: skillsync_user
-      MYSQL_PASSWORD: skillsync_password
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_HOST: "%"
     ports:
       - "3306:3306"
@@ -29,9 +29,9 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/skillsync_db
-      SPRING_DATASOURCE_USERNAME: skillsync_user
-      SPRING_DATASOURCE_PASSWORD: skillsync_password
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     depends_on:
       - db
 
