@@ -27,7 +27,7 @@ public class DataInitializer implements CommandLineRunner {
             admin.setUsername("admin");
             admin.setEmail("admin@skillsync.com");
             admin.setPassword(encoder.encode("admin"));
-            admin.setRole(Role.CLIENT);
+            admin.setRole(Role.ADMIN);
             
             userRepository.save(admin);
         }

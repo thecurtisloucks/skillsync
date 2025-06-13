@@ -1,0 +1,304 @@
+{
+  "info": {
+    "_postman_id": "skillsync-api-collection",
+    "name": "SkillSync API",
+    "description": "Complete API collection for SkillSync backend with JWT authentication and role-based access control",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "jwt_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"FREELANCER\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Register a new user with username, email, password, and role"
+          }
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('jwt_token', response.token);",
+                  "    console.log('JWT Token saved:', response.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Login user and automatically save JWT token"
+          }
+        },
+        {
+          "name": "Login as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('jwt_token', response.token);",
+                  "    console.log('Admin JWT Token saved:', response.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Login as admin user and automatically save JWT token"
+          }
+        }
+      ],
+      "description": "Authentication endpoints for user registration and login"
+    },
+    {
+      "name": "Test Endpoints",
+      "item": [
+        {
+          "name": "Hello World",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/hello",
+              "host": ["{{base_url}}"],
+              "path": ["api", "hello"]
+            },
+            "description": "Public hello world endpoint"
+          }
+        },
+        {
+          "name": "Protected Endpoint",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/test/protected",
+              "host": ["{{base_url}}"],
+              "path": ["api", "test", "protected"]
+            },
+            "description": "Protected endpoint requiring valid JWT token"
+          }
+        },
+        {
+          "name": "Admin Only Test",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/test/admin-only",
+              "host": ["{{base_url}}"],
+              "path": ["api", "test", "admin-only"]
+            },
+            "description": "Test endpoint only accessible by ADMIN role"
+          }
+        },
+        {
+          "name": "User Only Test",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/test/user-only",
+              "host": ["{{base_url}}"],
+              "path": ["api", "test", "user-only"]
+            },
+            "description": "Test endpoint accessible by FREELANCER or CLIENT roles"
+          }
+        },
+        {
+          "name": "Authenticated Test",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/test/authenticated",
+              "host": ["{{base_url}}"],
+              "path": ["api", "test", "authenticated"]
+            },
+            "description": "Test endpoint accessible by any authenticated user"
+          }
+        }
+      ],
+      "description": "Test endpoints for various authentication and authorization scenarios"
+    },
+    {
+      "name": "Admin Endpoints",
+      "item": [
+        {
+          "name": "Admin Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/dashboard",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "dashboard"]
+            },
+            "description": "Admin dashboard - requires ADMIN role"
+          }
+        },
+        {
+          "name": "Manage Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/users",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "users"]
+            },
+            "description": "User management panel - requires ADMIN role"
+          }
+        }
+      ],
+      "description": "Admin-only endpoints requiring ADMIN role"
+    },
+    {
+      "name": "Freelancer Endpoints",
+      "item": [
+        {
+          "name": "Freelancer Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/freelancer/profile",
+              "host": ["{{base_url}}"],
+              "path": ["api", "freelancer", "profile"]
+            },
+            "description": "Freelancer profile - requires FREELANCER role"
+          }
+        },
+        {
+          "name": "View Projects",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/freelancer/projects",
+              "host": ["{{base_url}}"],
+              "path": ["api", "freelancer", "projects"]
+            },
+            "description": "View available projects - requires FREELANCER role"
+          }
+        }
+      ],
+      "description": "Freelancer-only endpoints requiring FREELANCER role"
+    },
+    {
+      "name": "Client Endpoints",
+      "item": [
+        {
+          "name": "Client Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/client/dashboard",
+              "host": ["{{base_url}}"],
+              "path": ["api", "client", "dashboard"]
+            },
+            "description": "Client dashboard - requires CLIENT role"
+          }
+        },
+        {
+          "name": "Post Project",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/client/projects/post",
+              "host": ["{{base_url}}"],
+              "path": ["api", "client", "projects", "post"]
+            },
+            "description": "Post new project - requires CLIENT role"
+          }
+        }
+      ],
+      "description": "Client-only endpoints requiring CLIENT role"
+    }
+  ]
+}
